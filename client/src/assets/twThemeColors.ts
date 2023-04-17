@@ -1,0 +1,38 @@
+export const twThemeColors = {
+  bg: {
+    blue: "bg-blue-800",
+    orange: "bg-orange-800",
+    amber: "bg-amber-800",
+    emerald: "bg-emerald-800",
+    cyan: "bg-cyan-800",
+    violet: "bg-violet-800",
+    fuchsia: "bg-fuchsia-800",
+  },
+  bgGradientHover: {
+    blue: "hover:from-blue-700 hover:to-blue-700",
+    orange: "hover:from-orange-700 hover:to-orange-700",
+    amber: "hover:from-amber-700 hover:to-amber-700",
+    emerald: "hover:from-emerald-700 hover:to-emerald-700",
+    cyan: "hover:from-cyan-700 hover:to-cyan-700",
+    violet: "hover:from-violet-700 hover:to-violet-700",
+    fuchsia: "hover:from-fuchsia-700 hover:to-fuchsia-700",
+  },
+  border: {
+    blue: "border-blue-500",
+    orange: "border-orange-500",
+    amber: "border-amber-500",
+    emerald: "border-emerald-500",
+    cyan: "border-cyan-500",
+    violet: "border-violet-500",
+    fuchsia: "border-fuchsia-500",
+  },
+  bgGradient: {
+    blue: "from-blue-700 to-blue-800",
+    orange: "from-orange-700 to-orange-800",
+    amber: "from-amber-700 to-amber-800",
+    emerald: "from-emerald-700 to-emerald-800",
+    cyan: "from-cyan-700 to-cyan-800",
+    violet: "from-violet-700 to-violet-800",
+    fuchsia: "from-fuchsia-700 to-fuchsia-800",
+  },
+};

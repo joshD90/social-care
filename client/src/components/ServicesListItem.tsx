@@ -1,17 +1,30 @@
-import React, { FC, useState, useEffect } from "react";
-import { Service } from "../types/serviceTypes";
+import { FC, useState, useEffect } from "react";
 import ServicesListItemDropped from "./ServicesListItemDropped";
+import { ServiceDropped } from "../classes/serviceClasses";
+import { useMediaQuery } from "../hooks/useMediaQuery";
 
-type Props = { service: Service };
+type Props = {
+  service: ServiceDropped;
+  setSelectedService: React.Dispatch<
+    React.SetStateAction<ServiceDropped | null>
+  >;
+};
 
-const ServicesListItem: FC<Props> = ({ service }) => {
+const ServicesListItem: FC<Props> = ({ service, setSelectedService }) => {
   const [dropped, setDropped] = useState(false);
+  const isBigScreen = useMediaQuery("(min-width:768px)");
 
-  const toggleDropped = () => setDropped(!dropped);
+  const toggleDropped = () => {
+    if (!isBigScreen) setDropped(!dropped);
+    setSelectedService(service);
+  };
 
   return (
-    <div className="w-full rounded-sm shadow-inner" onClick={toggleDropped}>
-      <div className="w-full bg-gradient-to-b from-green-700 to-green-800 flex items-center hover:from-green-800 hover:to-green-800">
+    <div className="w-full rounded-sm shadow-inner">
+      <div
+        className="w-full bg-gradient-to-b from-green-700 to-green-800 flex items-center hover:from-green-600 hover:to-green-600 cursor-pointer"
+        onClick={toggleDropped}
+      >
         <h3 className="ml-5 text-lg text-white py-5">{service.name}</h3>
       </div>
       <div
