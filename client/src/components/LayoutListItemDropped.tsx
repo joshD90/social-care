@@ -29,7 +29,11 @@ const ServicesListItemDropped: FC<Props> = ({ service }) => {
         <div className="py-5 flex justify-end">
           <button
             className="bg-neutral-600 p-2 rounded-sm  hover:bg-neutral-700 shadow-sm"
-            onClick={() => navigate(`/services/${service.seeMore}`)}
+            onClick={() =>
+              navigate(
+                `/services/categories/${service.category}/${service.seeMore}`
+              )
+            }
           >
             See More
           </button>

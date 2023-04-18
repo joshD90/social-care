@@ -1,4 +1,5 @@
 import { ServiceDropped } from "../classes/serviceClasses";
+import { ColorTypes } from "./colorTypes";
 
 export type Service = {
   name: string;
@@ -21,4 +22,11 @@ export type CategoryNames =
 export type ServiceState = {
   error: string;
   services: ServiceDropped[];
+};
+
+export type ListItemType = {
+  name: string;
+  forwardTo: string;
+  color?: ColorTypes;
+  droppedInfo?: ServiceDropped;
 };
