@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { twThemeColors } from "../assets/twThemeColors";
 import { ColorTypes } from "../types/colorTypes";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { ServiceDropped } from "../classes/serviceClasses";
 import { useMediaQuery } from "../hooks/useMediaQuery";
@@ -23,9 +23,11 @@ const LayoutListItem: FC<Props> = ({
   const navigate = useNavigate();
   const [dropped, setDropped] = useState(false);
   const isAboveMedium = useMediaQuery("(min-width:768px)");
+  const { category } = useParams();
 
   const handleClick = () => {
-    if (isAboveMedium || !droppedInfo) return navigate(forwardTo);
+    if (isAboveMedium || !droppedInfo)
+      return navigate(forwardTo, { replace: !!category });
     setDropped(!dropped);
   };
 
@@ -38,7 +40,10 @@ const LayoutListItem: FC<Props> = ({
         {name}
       </div>
       {droppedInfo && !isAboveMedium && dropped && (
-        <ServicesListItemDropped service={droppedInfo} />
+        <ServicesListItemDropped
+          service={droppedInfo}
+          themeColor={themeColor}
+        />
       )}
     </div>
   );

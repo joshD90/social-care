@@ -4,12 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { ServiceDropped } from "../classes/serviceClasses";
 import ServiceDroppedDetailArray from "../microComponents/ServiceDroppedDetailArray";
 import ServiceDroppedDetail from "../microComponents/ServiceDroppedDetail";
+import { ColorTypes } from "../types/colorTypes";
 
 type Props = {
   service: ServiceDropped;
+  themeColor: ColorTypes;
 };
 
-const ServicesListItemDropped: FC<Props> = ({ service }) => {
+const ServicesListItemDropped: FC<Props> = ({ service, themeColor }) => {
   const navigate = useNavigate();
 
   return (
@@ -21,10 +23,12 @@ const ServicesListItemDropped: FC<Props> = ({ service }) => {
         <ServiceDroppedDetailArray
           detailLabel="Needs Met"
           detailArray={service.needsMet}
+          themeColor={themeColor}
         />
         <ServiceDroppedDetail
           detailLabel="Age Range"
           detail={service.ageRange}
+          themeColor={themeColor}
         />
         <div className="py-5 flex justify-end">
           <button

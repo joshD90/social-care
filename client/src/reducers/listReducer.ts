@@ -14,13 +14,13 @@ export const listReducer = (
       const categoryList = categoriesArray.map((category) => ({
         name: category.name,
         color: category.color,
-        forwardTo: `/services/categories/${category.name}`,
+        forwardTo: `/services/categories/${category.to}`,
       }));
       return categoryList;
     //setting our layout list as services within a category
     case "Set_Services_List":
       const catColor = categoriesArray.find(
-        (cat) => cat.name.toLowerCase() === action.payload.toLowerCase()
+        (cat) => cat.to.toLowerCase() === action.payload.toLowerCase()
       )?.color;
       if (!catColor) throw new Error("cant find color");
       const filteredByCategory = servicesData.filter((service) => {

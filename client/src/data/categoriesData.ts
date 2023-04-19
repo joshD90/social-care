@@ -1,9 +1,10 @@
 import { ColorTypes } from "../types/colorTypes";
+import { CategoryForwardTo } from "../types/serviceTypes";
 
 export const categoriesArray: {
   name: string;
   color: ColorTypes;
-  to: string;
+  to: CategoryForwardTo;
 }[] = [
   { name: "Shelter", color: "orange", to: "shelter" },
   { name: "Addiction", color: "amber", to: "addiction" },

@@ -19,6 +19,16 @@ export type CategoryNames =
   | "shelter"
   | "addiction";
 
+export type CategoryForwardTo =
+  | "housing"
+  | "mentalHealth"
+  | "material"
+  | "supportGroups"
+  | "medical"
+  | "financial"
+  | "shelter"
+  | "addiction";
+
 export type ServiceState = {
   error: string;
   services: ServiceDropped[];

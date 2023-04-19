@@ -1,0 +1,12 @@
+so my issue is that I want to have a list as effectively ever present once i get into the services section of the page.
+Once i go to the /services section, it should have layout where there is a list on the side and a potential for services in the outlet if necessary.
+
+However this runs into problems, when the view is small, i want to be able to do the drop down and view more.
+
+If I were to do it all the same way, could i just hide the list and show the outlet when i click on see more?  I would have to prop drill this from the outlet.  This isnt actually that far.
+
+Also my list reducer would have to be set up as for lists.
+
+Plan so far...
+Create a layout with list on the left and outlet on the right at the depth of /services.  this will dispatch list state to be category list.
+have /categories nested inside this and when they are loading dispatch list state to be services.  Once we have done this then we set up our routing that each service is a query=service.  We set a state such as serviceSelected where we can shoot it back up the line, then if our media query is active as well as our selectedservice is active, dont draw the list.

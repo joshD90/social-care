@@ -1,10 +1,10 @@
-import { CategoryNames } from "../types/serviceTypes";
+import { CategoryForwardTo, CategoryNames } from "../types/serviceTypes";
 
 export class ServiceInList {
   name: string;
-  category: CategoryNames;
+  category: CategoryForwardTo;
 
-  constructor(name: string, category: CategoryNames) {
+  constructor(name: string, category: CategoryForwardTo) {
     this.name = name;
     this.category = category;
   }
@@ -21,7 +21,7 @@ export class ServiceDropped extends ServiceInList {
 
   constructor(
     name: string,
-    category: CategoryNames,
+    category: CategoryForwardTo,
     organisation: string,
     description: string,
     needsMet: string[],
