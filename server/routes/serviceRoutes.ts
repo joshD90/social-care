@@ -16,14 +16,14 @@ router.get("/", getAllServices);
 router.post("/search", searchAllServices);
 ``;
 //at the category level
-router.get("/:category", getAllServicesByCategory);
-router.post("/:category", createNewCategory);
-router.put("/:category", updateCategoryName);
+router.get("/categories/:category", getAllServicesByCategory);
+router.post("/categories/:category", createNewCategory);
+router.put("/categories/:category", updateCategoryName);
 
 //at the level of individual services
-router.get("/services/:serviceId", getServiceById);
-router.post("/services/", createNewService);
-router.put("/services/:serviceId", updateServiceById);
-router.delete("/services/:serviceId", deleteServiceById);
+router.get("/service/:serviceId", getServiceById);
+router.post("/service/", createNewService);
+router.put("/service/:serviceId", updateServiceById);
+router.delete("/service/:serviceId", deleteServiceById);
 
 export default router;
