@@ -1,5 +1,5 @@
 import express from "express";
-import getAllServices from "../controllers/services/service/allServices";
+import getAllServices from "../controllers/services/service/getAllServices";
 import getAllServicesByCategory from "../controllers/services/serviceByCategory/getAllServicesByCategory";
 import createNewCategory from "../controllers/services/serviceByCategory/createNewCategory";
 import updateCategoryName from "../controllers/services/serviceByCategory/updateCategoryName";
