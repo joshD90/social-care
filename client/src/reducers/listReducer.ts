@@ -24,12 +24,16 @@ export const listReducer = (
       )?.color;
       if (!catColor) throw new Error("cant find color");
       const filteredByCategory = servicesData.filter((service) => {
-        return service.category.toLowerCase() === action.payload.toLowerCase();
+        return (
+          service.getCategory().toLowerCase() === action.payload.toLowerCase()
+        );
       });
 
       const listItemsInCategory = filteredByCategory.map((item) => ({
-        name: item.name,
-        forwardTo: `/services/categories/${action.payload}/${item.seeMore}`,
+        name: item.getName(),
+        forwardTo: `/services/categories/${
+          action.payload
+        }/${item.getFowardTo()}`,
         color: catColor,
         droppedInfo: item,
       }));

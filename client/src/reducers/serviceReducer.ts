@@ -10,7 +10,7 @@ const serviceReducer = (
     //find a single service
     case "findOne":
       const oneService = services.find(
-        (service) => service.seeMore === action.name
+        (service) => service.getFowardTo() === action.name
       );
       //if we can't find it set error
       if (!oneService)
@@ -21,7 +21,7 @@ const serviceReducer = (
     case "findAllInCategory":
       const categoryServices = services.filter(
         (service) =>
-          action.name.toLowerCase() === service.category.toLowerCase()
+          action.name.toLowerCase() === service.getCategory().toLowerCase()
       );
       if (categoryServices.length === 0 || categoryServices === undefined)
         return {

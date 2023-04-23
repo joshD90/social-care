@@ -4,7 +4,7 @@ import { Category } from "../types/serviceTypes";
 const initialiseCategories = async (
   connection: PromisePoolConnection,
   categories: Category[]
-) => {
+): Promise<"success" | Error> => {
   const selectCategoriesQuery = "SELECT * FROM categories";
 
   try {
@@ -12,7 +12,7 @@ const initialiseCategories = async (
     const [rows] = await connection.query<RowDataPacket[]>(
       selectCategoriesQuery
     );
-    if (rows.length !== 0) return;
+    if (rows.length !== 0) return "success";
 
     //if not then we go through each of the category possibility and add then into them
     categories.forEach((category) => {
@@ -24,8 +24,10 @@ const initialiseCategories = async (
 
       connection.execute(query, values);
     });
+    return "success";
   } catch (error) {
     console.log(error);
+    return error as Error;
   }
 };
 

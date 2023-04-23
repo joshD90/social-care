@@ -1,15 +1,15 @@
 import { PromisePoolConnection, RowDataPacket } from "mysql2/promise";
+import { ServiceDBReturn, SubAttribute } from "../../types/serviceTypes";
 
 export const getServiceByIdQuery = async (
   connection: PromisePoolConnection,
   serviceId: number
-): Promise<RowDataPacket[] | Error> => {
+): Promise<ServiceDBReturn[] | Error> => {
   const query = `SELECT * FROM services WHERE id = ?`;
   try {
-    const [result] = await connection.query<RowDataPacket[]>(query, [
+    const [result] = await connection.query<ServiceDBReturn[]>(query, [
       serviceId,
     ]);
-
     return result;
   } catch (error) {
     console.log(error);
@@ -21,7 +21,7 @@ export const getServiceSubAttributes = async (
   connection: PromisePoolConnection,
   serviceId: number,
   attribute: "needsMet" | "clientGroups" | "areasServed"
-): Promise<any[] | Error> => {
+): Promise<string[] | Error> => {
   let junctionTable: string;
   let colName: string;
   let junctionTableTargetCol: string;
@@ -48,10 +48,9 @@ export const getServiceSubAttributes = async (
   const values = [serviceId];
 
   try {
-    const [rows] = await connection.query<RowDataPacket[]>(query, values);
-    const arrayOfAttributes = rows.map((row) => Object.values(row)[0]);
-    const result = await connection.query(query, values);
-    if (attribute === "areasServed") console.log(result);
+    const [rows] = await connection.query<SubAttribute[]>(query, values);
+    const arrayOfAttributes = rows.map((row) => Object.values<string>(row)[0]);
+
     return arrayOfAttributes;
   } catch (error) {
     console.log(error);

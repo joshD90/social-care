@@ -25,8 +25,8 @@ const Service: FC<Props> = () => {
 
   //update our theme color based on the service
   useEffect(() => {
-    if (!service?.services[0]?.category) return;
-    const catColor = getCategoryColor(service.services[0].category);
+    if (!service?.services[0]?.getCategory()) return;
+    const catColor = getCategoryColor(service.services[0].getCategory());
     setThemeColor(catColor);
   }, [service.services]);
 
@@ -47,22 +47,24 @@ const Service: FC<Props> = () => {
   //main render function
   return (
     <div className="bg-slate-800 w-full h-full text-slate-50">
-      <h1 className="text-center text-2xl py-5">{service.services[0].name}</h1>
-      <p className="text-center">{service.services[0].description}</p>
+      <h1 className="text-center text-2xl py-5">
+        {service.services[0].getName()}
+      </h1>
+      <p className="text-center">{service.services[0].getDescription()}</p>
       <hr className="w-1/2 mx-auto my-5" />
       <ServiceDetail
         detailLabel="Organisation"
-        detail={service.services[0].organisation}
+        detail={service.services[0].getOrganisation()}
         themeColor={themeColor}
       />
       <ServiceDetailArray
         detailLabel="Needs Met"
-        detailArray={service.services[0].needsMet}
+        detailArray={service.services[0].getNeedsMet()}
         themeColor={themeColor}
       />
       <ServiceDetail
         detailLabel="Age Range"
-        detail={service.services[0].ageRange}
+        detail={service.services[0].getAgeRangeString()}
         themeColor={themeColor}
       />
     </div>

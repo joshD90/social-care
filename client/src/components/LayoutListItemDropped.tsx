@@ -18,16 +18,16 @@ const ServicesListItemDropped: FC<Props> = ({ service, themeColor }) => {
     <div className="bg-slate-800 text-white w-full">
       <div className="p-5">
         <div className="text-center">
-          <p>{service.description}</p>
+          <p>{service.getDescription()}</p>
         </div>
         <ServiceDroppedDetailArray
           detailLabel="Needs Met"
-          detailArray={service.needsMet}
+          detailArray={service.getNeedsMet()}
           themeColor={themeColor}
         />
         <ServiceDroppedDetail
           detailLabel="Age Range"
-          detail={service.ageRange}
+          detail={service.getAgeRangeString()}
           themeColor={themeColor}
         />
         <div className="py-5 flex justify-end">
@@ -35,7 +35,7 @@ const ServicesListItemDropped: FC<Props> = ({ service, themeColor }) => {
             className="bg-neutral-600 p-2 rounded-sm  hover:bg-neutral-700 shadow-sm"
             onClick={() =>
               navigate(
-                `/services/categories/${service.category}/${service.seeMore}`
+                `/services/categories/${service.getCategory()}/${service.getFowardTo()}`
               )
             }
           >
