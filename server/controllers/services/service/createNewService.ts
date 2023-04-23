@@ -17,10 +17,6 @@ const createNewService = async (req: Request, res: Response) => {
     //first create our service table entry
     const newServiceBase = await createServiceTableEntry(data, connection);
     if (newServiceBase instanceof Error) {
-      console.log(
-        newServiceBase,
-        "this should only be callingin the event of an error"
-      );
       throw Error("could not make the new service entry");
     }
     //we get the id of the newly created table returned
