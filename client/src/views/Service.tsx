@@ -7,64 +7,77 @@ import serviceReducer from "../reducers/serviceReducer";
 
 import { getCategoryColor } from "../utils/getCategoryColor";
 import { ColorTypes } from "../types/colorTypes";
+import singleServiceReducer from "../reducers/singleServiceReducer";
+import { SingleServiceReducerType } from "../types/serviceTypes";
+import getFetch from "../fetchRequests.ts/getFetch";
 
 type Props = {};
 
+const initialServiceState: SingleServiceReducerType = {
+  data: null,
+  isLoading: true,
+  error: null,
+};
+
 const Service: FC<Props> = () => {
   const serviceParam = useParams().service;
-  const [service, dispatch] = useReducer(serviceReducer, {
-    error: "",
-    services: [],
-  });
-  const [themeColor, setThemeColor] = useState<ColorTypes | "">("");
-
-  //set our service state
+  const [{ isLoading, error, data }, dispatch] = useReducer(
+    singleServiceReducer,
+    initialServiceState
+  );
+  const [themeColor, setThemeColor] = useState<"" | ColorTypes>("");
+  //NOT SURE THAT WE CAN LOOK UP OUR SERVICE BY NAME - MAY NEED TO DO THIS BY ID??
+  //perform our fetch request
   useEffect(() => {
-    if (serviceParam) dispatch({ type: "findOne", name: serviceParam });
-  }, [serviceParam]);
+    const abortController = new AbortController();
+    if (!serviceParam) return;
+    getFetch(dispatch, `/service/${serviceParam}`, abortController);
+
+    () => abortController.abort();
+  }, []);
 
   //update our theme color based on the service
   useEffect(() => {
-    if (!service?.services[0]?.getCategory()) return;
-    const catColor = getCategoryColor(service.services[0].getCategory());
+    if (!data?.getCategory()) return;
+    const catColor = getCategoryColor(data.getCategory());
     setThemeColor(catColor);
-  }, [service.services]);
+  }, [data]);
 
-  //if the service didn't load or hasnt loaded yet
-  if (!serviceParam) return <></>;
-  if (service.error)
+  //if error display error only
+  if (error)
     return (
       <div className="w-full h-full flex justify-center items-center text-slate-50">
-        {service.error}
+        {error}
       </div>
     );
-  if (!service.services || service.services.length === 0)
+
+  //display loading
+  if (isLoading || !data)
     return (
       <div className="w-full h-full flex justify-center items-center text-slate-50">
-        ...Loading
+        {isLoading}
       </div>
     );
+
   //main render function
   return (
     <div className="bg-slate-800 w-full h-full text-slate-50">
-      <h1 className="text-center text-2xl py-5">
-        {service.services[0].getName()}
-      </h1>
-      <p className="text-center">{service.services[0].getDescription()}</p>
+      <h1 className="text-center text-2xl py-5">{data.getName()}</h1>
+      <p className="text-center">{data.getDescription()}</p>
       <hr className="w-1/2 mx-auto my-5" />
       <ServiceDetail
         detailLabel="Organisation"
-        detail={service.services[0].getOrganisation()}
+        detail={data.getOrganisation()}
         themeColor={themeColor}
       />
       <ServiceDetailArray
         detailLabel="Needs Met"
-        detailArray={service.services[0].getNeedsMet()}
+        detailArray={data.getNeedsMet()}
         themeColor={themeColor}
       />
       <ServiceDetail
         detailLabel="Age Range"
-        detail={service.services[0].getAgeRangeString()}
+        detail={data.getAgeRangeString()}
         themeColor={themeColor}
       />
     </div>
@@ -72,3 +85,36 @@ const Service: FC<Props> = () => {
 };
 
 export default Service;
+
+// const [service, dispatch] = useReducer(serviceReducer, {
+//   error: "",
+//   services: [],
+// });
+// const [themeColor, setThemeColor] = useState<ColorTypes | "">("");
+
+// //set our service state
+// useEffect(() => {
+//   if (serviceParam) dispatch({ type: "findOne", name: serviceParam });
+// }, [serviceParam]);
+
+// //update our theme color based on the service
+// useEffect(() => {
+//   if (!service?.services[0]?.getCategory()) return;
+//   const catColor = getCategoryColor(service.services[0].getCategory());
+//   setThemeColor(catColor);
+// }, [service.services]);
+
+// //if the service didn't load or hasnt loaded yet
+// if (!serviceParam) return <></>;
+// if (service.error)
+//   return (
+//     <div className="w-full h-full flex justify-center items-center text-slate-50">
+//       {service.error}
+//     </div>
+//   );
+// if (!service.services || service.services.length === 0)
+//   return (
+//     <div className="w-full h-full flex justify-center items-center text-slate-50">
+//       ...Loading
+//     </div>
+//   );

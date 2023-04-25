@@ -4,7 +4,9 @@ import { ServiceFormType } from "../types/serviceTypes";
 const useForm = <T>(initialState: T) => {
   const [serviceForm, setServiceForm] = useState<T>(initialState);
   //dynamically update our form
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ): void => {
     let { name, value } = e.target;
     //get some of our properties into arrays
     const usedValue =

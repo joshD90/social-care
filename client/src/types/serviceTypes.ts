@@ -1,7 +1,8 @@
 import { ServiceDropped } from "../classes/serviceClasses";
 import { ColorTypes } from "./colorTypes";
+import { Service } from "../classes/serviceClasses";
 
-export type Service = {
+export type ServiceFiltered = {
   name: string;
   address?: string;
   needsServed?: string[];
@@ -79,3 +80,13 @@ export type ServiceFormType = {
   clientGroups: string[];
   areasServed: string[];
 };
+
+export type SingleServiceReducerType = {
+  data: Service | null;
+  isLoading: boolean;
+  error: string | null;
+};
+export type SingeServiceReducerActions =
+  | { type: "GET_INIT" }
+  | { type: "GET_SUCCESS"; payload: any }
+  | { type: "GET_FAILURE"; payload: string };
