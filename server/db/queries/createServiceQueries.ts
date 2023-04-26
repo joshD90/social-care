@@ -63,10 +63,9 @@ export const createSubRecord = async (
       );
       //if it is, grab the id of that row and create a junction entry
       if (rows.length !== 0) {
-        console.log(rows[0]);
         const subAttributeId = rows[0].id;
         await connection.query(
-          `INSERT INTO ${junctionTable} (service_id, ${junctionTableCol}) VALUES (?, ?)`,
+          `INSERT IGNORE INTO ${junctionTable} (service_id, ${junctionTableCol}) VALUES (?, ?)`,
           [newEntryId, subAttributeId]
         );
       } else {
@@ -78,7 +77,7 @@ export const createSubRecord = async (
         //now create our junction table entry
         const subAttributeId = newSubAttribute.insertId;
         await connection.query(
-          `INSERT INTO ${junctionTable} (service_id, ${junctionTableCol}) VALUES (?, ?)`,
+          `INSERT IGNORE INTO ${junctionTable} (service_id, ${junctionTableCol}) VALUES (?, ?)`,
           [newEntryId, subAttributeId]
         );
       }
