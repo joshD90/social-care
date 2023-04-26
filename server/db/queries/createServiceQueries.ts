@@ -3,7 +3,7 @@ import {
   ResultSetHeader,
   RowDataPacket,
 } from "mysql2/promise";
-import { ServiceBaseType } from "../../types/serviceTypes";
+import { ServiceBaseType, SubGroupNames } from "../../types/serviceTypes";
 
 export const createServiceTableEntry = async (
   data: ServiceBaseType,
@@ -29,7 +29,7 @@ export const createServiceTableEntry = async (
 
 export const createSubRecord = async (
   connection: PromisePoolConnection,
-  table: "needsMet" | "clientGroups" | "areasServed",
+  table: SubGroupNames,
   data: string[],
   newEntryId: number
 ): Promise<"success" | Error> => {

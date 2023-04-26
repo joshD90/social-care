@@ -3,13 +3,12 @@ import { useParams } from "react-router-dom";
 
 import ServiceDetailArray from "../microComponents/ServiceDetailArray";
 import ServiceDetail from "../microComponents/ServiceDetail";
-import serviceReducer from "../reducers/serviceReducer";
-
-import { getCategoryColor } from "../utils/getCategoryColor";
-import { ColorTypes } from "../types/colorTypes";
 import singleServiceReducer from "../reducers/singleServiceReducer";
-import { SingleServiceReducerType } from "../types/serviceTypes";
 import getFetch from "../fetchRequests.ts/getFetch";
+import { getCategoryColor } from "../utils/getCategoryColor";
+
+import { ColorTypes } from "../types/colorTypes";
+import { SingleServiceReducerType } from "../types/serviceTypes";
 
 type Props = {};
 
@@ -34,7 +33,7 @@ const Service: FC<Props> = () => {
     getFetch(dispatch, `/service/${serviceParam}`, abortController);
 
     () => abortController.abort();
-  }, []);
+  }, [serviceParam]);
 
   //update our theme color based on the service
   useEffect(() => {
@@ -80,41 +79,34 @@ const Service: FC<Props> = () => {
         detail={data.getAgeRangeString()}
         themeColor={themeColor}
       />
+      <ServiceDetailArray
+        detailLabel="Client Groups"
+        detailArray={data.getClientGroups()}
+        themeColor={themeColor}
+      />
+      <ServiceDetailArray
+        detailLabel="Areas Covered"
+        detailArray={data.getAreasServed()}
+        themeColor={themeColor}
+      />
+      <ServiceDetail
+        detailLabel="Contact Number"
+        detail={data.getContactNumber()}
+        themeColor={themeColor}
+      />
+      <ServiceDetail
+        detailLabel="Contact Email"
+        detail={data.getContactEmail()}
+        themeColor={themeColor}
+      />
+
+      <ServiceDetail
+        detailLabel="Website"
+        detail={data.getWebsite()!}
+        themeColor={themeColor}
+      />
     </div>
   );
 };
 
 export default Service;
-
-// const [service, dispatch] = useReducer(serviceReducer, {
-//   error: "",
-//   services: [],
-// });
-// const [themeColor, setThemeColor] = useState<ColorTypes | "">("");
-
-// //set our service state
-// useEffect(() => {
-//   if (serviceParam) dispatch({ type: "findOne", name: serviceParam });
-// }, [serviceParam]);
-
-// //update our theme color based on the service
-// useEffect(() => {
-//   if (!service?.services[0]?.getCategory()) return;
-//   const catColor = getCategoryColor(service.services[0].getCategory());
-//   setThemeColor(catColor);
-// }, [service.services]);
-
-// //if the service didn't load or hasnt loaded yet
-// if (!serviceParam) return <></>;
-// if (service.error)
-//   return (
-//     <div className="w-full h-full flex justify-center items-center text-slate-50">
-//       {service.error}
-//     </div>
-//   );
-// if (!service.services || service.services.length === 0)
-//   return (
-//     <div className="w-full h-full flex justify-center items-center text-slate-50">
-//       ...Loading
-//     </div>
-//   );

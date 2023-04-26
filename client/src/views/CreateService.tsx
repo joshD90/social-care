@@ -9,21 +9,21 @@ import AdminSelectInput from "../microComponents/AdminSelectInput";
 type Props = {};
 
 const serviceInitialState = {
-  name: "test",
-  forwardTo: "testForwardTo",
-  description: "test desc",
-  category: "shelter",
-  organisation: "testltd",
+  name: "",
+  forwardTo: "",
+  description: "",
+  category: "",
+  organisation: "",
   maxAge: 99,
   minAge: 1,
-  contactNumber: "0852347",
+  contactNumber: "01123456",
   contactEmail: "test@test.com",
   website: "test.com",
   referralPathway: "testfirst",
   address: "123 test st",
   imageUrl: "test url",
-  needsMet: ["food"],
-  clientGroups: ["homeless"],
+  needsMet: [],
+  clientGroups: [],
   areasServed: ["DCC"],
 };
 

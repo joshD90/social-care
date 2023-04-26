@@ -30,6 +30,9 @@ export interface ServiceDBReturn extends RowDataPacket {
   forwardTo: string;
   id: number;
 }
+export interface CategoryWithNeeds extends ServiceDBReturn {
+  needsMet: string[];
+}
 
 export interface Category {
   color: string;
@@ -43,4 +46,11 @@ export interface CategoryEntry extends Category {
 
 export type SubAttribute = RowDataPacket & {
   [key: string]: string[];
+};
+
+export type SubGroupNames = "areasServed" | "clientGroups" | "needsMet";
+
+export type SubGroupReq = {
+  data: string[];
+  subGroup: SubGroupNames;
 };

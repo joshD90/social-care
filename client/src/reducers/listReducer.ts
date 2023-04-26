@@ -39,6 +39,7 @@ export const listReducer = (
       }));
 
       return listItemsInCategory;
+
     default:
       throw new Error(`No action matches ${action.type}`);
   }

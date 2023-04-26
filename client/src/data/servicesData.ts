@@ -1,5 +1,4 @@
 import { ServiceDropped } from "../classes/serviceClasses";
-import { Service } from "../types/serviceTypes";
 
 const backLane = new ServiceDropped(
   "Back Lane",

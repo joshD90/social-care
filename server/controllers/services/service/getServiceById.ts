@@ -7,10 +7,10 @@ import connection from "../../../db/dbInit";
 
 //get a single service by it's id
 const getServiceById = async (req: Request, res: Response) => {
-  const serviceId = parseInt(req.query.serviceId as string);
+  const serviceId = parseInt(req.params.serviceId as string);
 
   if (typeof serviceId !== "number" || Number.isNaN(serviceId))
-    res.status(500).send(`${serviceId} is not of type number`);
+    return res.status(500).send(`${serviceId} is not of type number`);
 
   try {
     const result = await getServiceByIdQuery(connection, serviceId);

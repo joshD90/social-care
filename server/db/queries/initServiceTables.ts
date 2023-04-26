@@ -12,17 +12,17 @@ const createAreaServedTable =
 //create our services table. We have created our categories first so we can reference this table first
 
 const createServicesTable =
-  "CREATE TABLE IF NOT EXISTS services (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, category VARCHAR(255), organisation VARCHAR(255), maxAge INT, minAge INT, contactNumber VARCHAR(255), contactEmail VARCHAR(255), website VARCHAR(255), referralPathway VARCHAR(1000), address VARCHAR(500), imageUrl VARCHAR(255), forwardTo VARCHAR(255), FOREIGN KEY (category) REFERENCES categories(forwardTo))";
+  "CREATE TABLE IF NOT EXISTS services (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, description VARCHAR(2000), category VARCHAR(255), organisation VARCHAR(255), maxAge INT, minAge INT, contactNumber VARCHAR(255), contactEmail VARCHAR(255), website VARCHAR(255), referralPathway VARCHAR(1000), address VARCHAR(500), imageUrl VARCHAR(255), forwardTo VARCHAR(255), FOREIGN KEY (category) REFERENCES categories(forwardTo))";
 
 //set up our junction tables for our many to many relationships
 const createServiceNeedsJunction =
-  "CREATE TABLE IF NOT EXISTS service_needs(service_id INT NOT NULL, need_id INT NOT NULL, PRIMARY KEY (service_id, need_id), FOREIGN KEY (service_id) REFERENCES services(id), FOREIGN KEY (need_id) REFERENCES needsMet(id))";
+  "CREATE TABLE IF NOT EXISTS service_needs(service_id INT NOT NULL, need_id INT NOT NULL, PRIMARY KEY (service_id, need_id), FOREIGN KEY (service_id) REFERENCES services(id) ON DELETE CASCADE, FOREIGN KEY (need_id) REFERENCES needsMet(id) ON DELETE CASCADE)";
 
 const createServiceClientGroupJunction =
-  "CREATE TABLE IF NOT EXISTS service_clientGroups(service_id INT NOT NULL, clientGroup_id INT NOT NULL, PRIMARY KEY (service_id, clientGroup_id), FOREIGN KEY (service_id) REFERENCES services(id), FOREIGN KEY (clientGroup_id) REFERENCES clientGroups(id))";
+  "CREATE TABLE IF NOT EXISTS service_clientGroups(service_id INT NOT NULL, clientGroup_id INT NOT NULL, PRIMARY KEY (service_id, clientGroup_id), FOREIGN KEY (service_id) REFERENCES services(id) ON DELETE CASCADE, FOREIGN KEY (clientGroup_id) REFERENCES clientGroups(id) ON DELETE CASCADE)";
 
 const createServiceAreaJunction =
-  "CREATE TABLE IF NOT EXISTS service_areas(service_id INT NOT NULL, area_id INT NOT NULL, PRIMARY KEY (service_id, area_id), FOREIGN KEY (service_id) REFERENCES services(id), FOREIGN KEY (area_id) REFERENCES areasServed(id))";
+  "CREATE TABLE IF NOT EXISTS service_areas(service_id INT NOT NULL, area_id INT NOT NULL, PRIMARY KEY (service_id, area_id), FOREIGN KEY (service_id) REFERENCES services(id) ON DELETE CASCADE, FOREIGN KEY (area_id) REFERENCES areasServed(id) ON DELETE CASCADE)";
 
 export const initServiceTablesQueries = {
   createServicesTable,

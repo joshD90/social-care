@@ -5,6 +5,7 @@ import {
   createServiceTableEntry,
   createSubRecord,
 } from "../../../db/queries/createServiceQueries";
+import { SubGroupReq } from "../../../types/serviceTypes";
 
 const createNewService = async (req: Request, res: Response) => {
   //make sure the connection is up and running
@@ -22,7 +23,11 @@ const createNewService = async (req: Request, res: Response) => {
     //we get the id of the newly created table returned
     const entryId = newServiceBase.insertId;
 
-    const manyToMany = [needsMet, clientGroups, areasServed];
+    const manyToMany: SubGroupReq[] = [
+      { data: needsMet, subGroup: "needsMet" },
+      { data: clientGroups, subGroup: "clientGroups" },
+      { data: areasServed, subGroup: "areasServed" },
+    ];
     //now we create our relevant tables and the many to many relationships that they hold
     for (const relationship of manyToMany) {
       if (relationship.data.length !== 0) {
@@ -37,7 +42,9 @@ const createNewService = async (req: Request, res: Response) => {
       }
     }
 
-    res.status(201).send("a new service was created");
+    res
+      .status(201)
+      .send({ message: "A new Service was created", serviceId: entryId });
   } catch (error) {
     console.log(error);
     const errorToSend = error instanceof Error ? error.message : error;

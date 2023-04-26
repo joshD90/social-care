@@ -62,6 +62,23 @@ export type FullServiceType = {
   areasServed: string[];
 };
 
+export type ServiceWithoutSubs = {
+  id: number;
+  name: string;
+  forwardTo: string;
+  description: string;
+  category: CategoryForwardTo;
+  organisation: string;
+  maxAge: number | null;
+  minAge: number | null;
+  contactNumber: string;
+  contactEmail: string;
+  website: string | null;
+  referralPathway: string;
+  address: string;
+  imageUrl: string;
+};
+
 export type ServiceFormType = {
   name: string;
   forwardTo: string;
@@ -90,3 +107,15 @@ export type SingeServiceReducerActions =
   | { type: "GET_INIT" }
   | { type: "GET_SUCCESS"; payload: any }
   | { type: "GET_FAILURE"; payload: string };
+
+export type ListReducerType = {
+  data: ListItemType[];
+  error: string | null;
+  isLoading: boolean;
+};
+
+export type ListReducerActions =
+  | { type: "GET_INIT" }
+  | { type: "GET_SUCCESS"; payload: any }
+  | { type: "GET_FAILURE"; payload: string }
+  | { type: "Set_Categories_List" };
