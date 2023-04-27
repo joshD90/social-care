@@ -8,16 +8,13 @@ const useForm = <T>(initialState: T) => {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ): void => {
     let { name, value } = e.target;
-    //get some of our properties into arrays
-    const usedValue =
-      name === "needsMet" || name === "areasServed" || name === "clientGroups"
-        ? value.split(" ")
-        : value;
 
-    setServiceForm((prev) => ({ ...prev, [name]: usedValue }));
+    //get some of our properties into arrays
+
+    setServiceForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  return { serviceForm, handleInputChange };
+  return { serviceForm, handleInputChange, setServiceForm };
 };
 
 export default useForm;

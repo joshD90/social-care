@@ -1,37 +1,25 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 
 import useForm from "../hooks/useForm";
 import AdminInput from "../microComponents/AdminInput";
 import { ServiceFormType } from "../types/serviceTypes";
 import { categoriesArray } from "../data/categoriesData";
 import AdminSelectInput from "../microComponents/AdminSelectInput";
+import { useParams } from "react-router-dom";
 
-type Props = {};
-
-const serviceInitialState = {
-  name: "",
-  forwardTo: "",
-  description: "",
-  category: "",
-  organisation: "",
-  maxAge: 99,
-  minAge: 1,
-  contactNumber: "01123456",
-  contactEmail: "test@test.com",
-  website: "test.com",
-  referralPathway: "testfirst",
-  address: "123 test st",
-  imageUrl: "test url",
-  needsMet: [],
-  clientGroups: [],
-  areasServed: ["DCC"],
+type Props = {
+  update?: boolean;
 };
-
-const CreateService = (props: Props) => {
-  const { serviceForm, handleInputChange } =
+//can do update functionality as well
+const CreateService: FC<Props> = ({ update }) => {
+  const { serviceForm, handleInputChange, setServiceForm } =
     useForm<ServiceFormType>(serviceInitialState);
+  const updateId = useParams().serviceId;
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  //memoise our categories changing
   const categoryOptions = useMemo(
     () =>
       categoriesArray.map((category) => {
@@ -40,17 +28,33 @@ const CreateService = (props: Props) => {
     [categoriesArray]
   );
 
+  //for submitting our form - passing to subcomponents so useCallback to avoid subcomponents rerendering unnecessarily
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
 
-      const url = "http://localhost:5000/services/service/";
+      const url = `http://localhost:5000/services/service/${
+        updateId && updateId
+      }`;
+      //change our sub attributes into arrays if they aren't already
+      const { needsMet, clientGroups, areasServed } = serviceForm;
+      const ammendedServiceForm = {
+        ...serviceForm,
+        needsMet: Array.isArray(needsMet) ? needsMet : needsMet.split(" "),
+        clientGroups: Array.isArray(clientGroups)
+          ? needsMet
+          : clientGroups.split(" "),
+        areasServed: Array.isArray(areasServed)
+          ? areasServed
+          : areasServed.split(" "),
+      };
+
       try {
         //send our request
         const response = await fetch(url, {
-          method: "POST",
+          method: update ? "PUT" : "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(serviceForm),
+          body: JSON.stringify(ammendedServiceForm),
         });
         //error handle
         if (!response.ok)
@@ -58,7 +62,10 @@ const CreateService = (props: Props) => {
             `There was an issue serverside with a code of ${response.status}`
           );
         const data = await response.json();
-        setSuccess(JSON.stringify(data));
+        if (!update && data) {
+          setSuccess(JSON.stringify(data));
+        } else
+          setSuccess(`Service with Id ${updateId} was successfully updated`);
       } catch (error) {
         if (error instanceof Error) return setError(error.message);
         console.log(error);
@@ -66,6 +73,46 @@ const CreateService = (props: Props) => {
     },
     [serviceForm]
   );
+  //if this is an update component we will grab the information
+  useEffect(() => {
+    if (!update || !updateId) return;
+
+    const abortController = new AbortController();
+    const updateDetails = (async () => {
+      try {
+        const result = await fetch(
+          `http://localhost:5000/services/service/${updateId}`,
+          { method: "GET", signal: abortController.signal }
+        );
+        if (!result.ok)
+          throw new Error(`Error with fetching the service ${result.status}`);
+        const serviceFetched = await result.json();
+        console.log(serviceFetched, "SERVICE FETCHED");
+        setServiceForm((prev) => {
+          //change our arrays into strings to feed into inputs
+          const { needsMet, clientGroups, areasServed, ...rest } =
+            serviceFetched;
+          const alteredNeedsMet = needsMet.join(" ");
+          const alteredClientGroups = clientGroups.join(" ");
+          const alteredAreasServed = areasServed.join(" ");
+          console.log(alteredAreasServed, alteredNeedsMet, alteredClientGroups);
+          //update our state
+          return {
+            ...prev,
+            needsMet: alteredNeedsMet,
+            clientGroups: alteredClientGroups,
+            areasServed: alteredAreasServed,
+            ...rest,
+          };
+        });
+      } catch (error) {
+        console.log(error);
+        if (error instanceof Error) setError(error.message);
+      }
+    })();
+
+    () => abortController.abort();
+  }, [updateId]);
 
   if (error !== "") return <div>{error}</div>;
   if (success !== "") return <div>{success}</div>;
@@ -166,16 +213,19 @@ const CreateService = (props: Props) => {
             label="Needs that service meets"
             name="needsMet"
             onChange={handleInputChange}
+            value={serviceForm.needsMet}
           />
           <AdminInput
             label="Clients that Service Caters for"
             name="clientGroups"
             onChange={handleInputChange}
+            value={serviceForm.clientGroups}
           />
           <AdminInput
             label="Areas Covered By Service"
             name="areasServed"
             onChange={handleInputChange}
+            value={serviceForm.areasServed}
           />
         </div>
         <button
@@ -190,3 +240,22 @@ const CreateService = (props: Props) => {
 };
 
 export default CreateService;
+
+const serviceInitialState = {
+  name: "",
+  forwardTo: "",
+  description: "",
+  category: "",
+  organisation: "",
+  maxAge: 99,
+  minAge: 1,
+  contactNumber: "01123456",
+  contactEmail: "test@test.com",
+  website: "test.com",
+  referralPathway: "testfirst",
+  address: "123 test st",
+  imageUrl: "test url",
+  needsMet: [],
+  clientGroups: [],
+  areasServed: ["DCC"],
+};

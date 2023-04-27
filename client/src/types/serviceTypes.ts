@@ -93,9 +93,9 @@ export type ServiceFormType = {
   referralPathway: string;
   address: string;
   imageUrl: string;
-  needsMet: string[];
-  clientGroups: string[];
-  areasServed: string[];
+  needsMet: string[] | string;
+  clientGroups: string[] | string;
+  areasServed: string[] | string;
 };
 
 export type SingleServiceReducerType = {

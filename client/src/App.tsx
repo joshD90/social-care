@@ -14,6 +14,10 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/admin/create" element={<CreateService />} />
+          <Route
+            path="/admin/update/:serviceId"
+            element={<CreateService update={true} />}
+          />
         </Routes>
         <Routes>
           <Route path="/" element={<Home />} />
