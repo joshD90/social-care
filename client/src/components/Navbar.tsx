@@ -1,9 +1,15 @@
+import { useNavigate } from "react-router-dom";
+
 type Props = {};
 
 const Navbar = (props: Props) => {
+  const navigate = useNavigate();
+
   return (
     <section className="w-full h-12 bg-slate-900 text-slate-50 flex items-center justify-between px-10">
-      <div>Logo</div>
+      <div onClick={() => navigate("/")} className="cursor-pointer">
+        Logo
+      </div>
       <div>
         <div>
           <form>

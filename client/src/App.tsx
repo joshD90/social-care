@@ -10,7 +10,7 @@ import CreateService from "./views/CreateService";
 function App() {
   return (
     <Router>
-      <div className="bg-slate-800 w-screen min-h-screen">
+      <div className="bg-slate-800 w-screen h-full">
         <Navbar />
         <Routes>
           <Route path="/admin/create" element={<CreateService />} />

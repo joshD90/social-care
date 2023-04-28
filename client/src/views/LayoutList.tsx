@@ -8,7 +8,7 @@ type Props = { listItems: ListItemType[] };
 const LayoutList: FC<Props> = ({ listItems }) => {
   if (!listItems || listItems.length === 0)
     return (
-      <div className="w-full h-full flex items-center justify-center">
+      <div className="w-full h-full flex items-center justify-center overflow-y-scroll">
         Nothing to Display Here... Something probably went wrong
       </div>
     );

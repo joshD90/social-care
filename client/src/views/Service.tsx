@@ -1,5 +1,5 @@
 import { FC, useReducer, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import ServiceDetailArray from "../microComponents/ServiceDetailArray";
 import ServiceDetail from "../microComponents/ServiceDetail";
@@ -9,6 +9,10 @@ import { getCategoryColor } from "../utils/getCategoryColor";
 
 import { ColorTypes } from "../types/colorTypes";
 import { SingleServiceReducerType } from "../types/serviceTypes";
+import { useMediaQuery } from "../hooks/useMediaQuery";
+import { isButtonElement } from "react-router-dom/dist/dom";
+import { BsFillArrowLeftCircleFill } from "react-icons/bs";
+import { twThemeColors } from "../assets/twThemeColors";
 
 type Props = {};
 
@@ -25,6 +29,9 @@ const Service: FC<Props> = () => {
     initialServiceState
   );
   const [themeColor, setThemeColor] = useState<"" | ColorTypes>("");
+  const isWideScreen = useMediaQuery("(min-width:768px)");
+  const navigate = useNavigate();
+
   //NOT SURE THAT WE CAN LOOK UP OUR SERVICE BY NAME - MAY NEED TO DO THIS BY ID??
   //perform our fetch request
   useEffect(() => {
@@ -60,7 +67,26 @@ const Service: FC<Props> = () => {
 
   //main render function
   return (
-    <div className="bg-slate-800 w-full h-full text-slate-50">
+    <div
+      className="bg-slate-800 w-full text-slate-50 overflow-y-scroll relative"
+      style={{ height: "calc(100vh - 3rem)" }}
+    >
+      {/* back button only visible when on smaller screen */}
+      {!isWideScreen && (
+        <button
+          className={`absolute left-3 top-3 ${
+            themeColor !== "" ? twThemeColors.textDarker[themeColor] : ""
+          } opacity-70 hover:opacity-100`}
+          onClick={() => navigate(`/services/categories/${data.getCategory()}`)}
+        >
+          <BsFillArrowLeftCircleFill
+            style={{
+              fontSize: "2rem",
+              backgroundImage: "inherit",
+            }}
+          />
+        </button>
+      )}
       <h1 className="text-center text-2xl py-5">{data.getName()}</h1>
       <p className="text-center">{data.getDescription()}</p>
       <hr className="w-1/2 mx-auto my-5" />

@@ -35,4 +35,13 @@ export const twThemeColors = {
     violet: "from-violet-700 to-violet-800",
     fuchsia: "from-fuchsia-700 to-fuchsia-800",
   },
+  textDarker: {
+    blue: "text-blue-800",
+    orange: "text-orange-800",
+    amber: "text-amber-800",
+    emerald: "text-emerald-800",
+    cyan: "text-cyan-800",
+    violet: "text-violet-800",
+    fuchsia: "text-fuchsia-800",
+  },
 };
