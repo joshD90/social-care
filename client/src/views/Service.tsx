@@ -89,6 +89,16 @@ const Service: FC<Props> = () => {
       )}
       <h1 className="text-center text-2xl py-5">{data.getName()}</h1>
       <p className="text-center">{data.getDescription()}</p>
+      {data.getImageUrl() && (
+        <div className="flex items-center justify-center p-5">
+          <img
+            src={data.getImageUrl()}
+            alt={data.getName()}
+            className="w-11/12 sm:w-4/5 md:w-1/2 bg-white rounded-md"
+          />
+        </div>
+      )}
+
       <hr className="w-1/2 mx-auto my-5" />
       <ServiceDetail
         detailLabel="Organisation"
