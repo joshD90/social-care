@@ -8,15 +8,20 @@ import searchAllServices from "../controllers/services/service/searchAllServices
 import createNewService from "../controllers/services/service/createNewService";
 import updateServiceById from "../controllers/services/service/updateService";
 import deleteServiceById from "../controllers/services/service/deleteServiceById";
+import passport from "passport";
 
 const router = express.Router();
 
 //all services
 router.get("/", getAllServices);
 router.post("/search", searchAllServices);
-``;
+
 //at the category level
-router.get("/categories/:category", getAllServicesByCategory);
+router.get(
+  "/categories/:category",
+  router.use(passport.authenticate("jwt", { session: false })),
+  getAllServicesByCategory
+);
 router.post("/categories/:category", createNewCategory);
 router.put("/categories/:category", updateCategoryName);
 

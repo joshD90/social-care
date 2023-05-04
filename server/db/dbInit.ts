@@ -2,6 +2,7 @@ import mysql from "mysql2";
 import envConfig from "../envConfig";
 import { PromisePoolConnection } from "mysql2/promise";
 import initServiceTables from "./initialiseServiceTables";
+import initialiseUserTables from "./initialiseUserTables";
 
 const pool = mysql.createPool({
   host: "127.0.0.1",
@@ -17,5 +18,6 @@ const connection: PromisePoolConnection = pool.promise();
 
 //set up all our tables
 initServiceTables(connection);
+initialiseUserTables(connection);
 
 export default connection;

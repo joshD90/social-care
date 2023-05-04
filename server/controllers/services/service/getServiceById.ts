@@ -4,9 +4,14 @@ import {
   getServiceSubAttributes,
 } from "../../../db/queries/getFullServiceQueries";
 import connection from "../../../db/dbInit";
+import { ReqUser } from "../../../types/authTypes";
 
 //get a single service by it's id
 const getServiceById = async (req: Request, res: Response) => {
+  const user = req.user as ReqUser;
+  if (user.privileges === "guest")
+    return res.status(200).send("You are logged in as a guest");
+
   const serviceId = parseInt(req.params.serviceId as string);
 
   if (typeof serviceId !== "number" || Number.isNaN(serviceId))
