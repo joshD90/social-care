@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 
-import { AuthSignIn } from "../../types/AuthTypes";
+import { AuthSignIn } from "../../types/authTypes";
+import { AuthContext } from "../../context/AuthContext";
+import getFetchUser from "../../fetchRequests.ts/getUserFetch";
+import { Navigate } from "react-router-dom";
 
 type Props = {};
 
@@ -9,6 +12,7 @@ const SignIn = (props: Props) => {
     username: "",
     password: "",
   });
+  const { currentUser, userDispatch } = useContext(AuthContext);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -20,8 +24,13 @@ const SignIn = (props: Props) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(credentials);
+    const abortController = new AbortController();
+    getFetchUser(credentials, userDispatch, abortController);
+
+    return () => abortController.abort();
   };
+
+  if (currentUser.user) return <Navigate to="/" />;
 
   return (
     <div

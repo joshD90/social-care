@@ -1,10 +1,14 @@
 import { useNavigate, Link } from "react-router-dom";
 import { AiOutlineSearch, AiFillHome } from "react-icons/ai";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+import fetchSignout from "../fetchRequests.ts/fetchSignout";
 
 type Props = {};
 
 const Navbar = (props: Props) => {
   const navigate = useNavigate();
+  const { currentUser, userDispatch } = useContext(AuthContext);
 
   return (
     <section className="w-full h-12 bg-slate-900 text-slate-50 flex items-center justify-between px-2 md:px-10">
@@ -24,18 +28,30 @@ const Navbar = (props: Props) => {
             />
           </form>
         </div>
-        <div className="flex md:gap-2 h-full">
-          <Link to="/auth/signin" className="h-full">
-            <button className="rounded-sm bg-lime-600 px-1 md:px-5 text-white font-bold opacity-90 hover:opacity-100 h-full">
-              Sign In
+        {!currentUser.user ? (
+          <div className="flex md:gap-2 h-full">
+            <Link to="/auth/signin" className="h-full">
+              <button className="rounded-sm bg-lime-600 px-1 md:px-5 text-white font-bold opacity-90 hover:opacity-100 h-full">
+                Sign In
+              </button>
+            </Link>
+            <Link to="/auth/signup" className="h-full">
+              <button className="rounded-sm bg-blue-600  px-1 md:px-5 text-white font-bold opacity-90 hover:opacity-100 h-full">
+                Sign Up
+              </button>
+            </Link>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2 h-full">
+            <span>{currentUser.user.username}</span>
+            <button
+              className="bg-red-500 text-white h-full px-2"
+              onClick={() => fetchSignout(userDispatch)}
+            >
+              Logout
             </button>
-          </Link>
-          <Link to="/auth/signup" className="h-full">
-            <button className="rounded-sm bg-blue-600  px-1 md:px-5 text-white font-bold opacity-90 hover:opacity-100 h-full">
-              Sign Up
-            </button>
-          </Link>
-        </div>
+          </div>
+        )}
       </div>
     </section>
   );
