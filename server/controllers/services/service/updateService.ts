@@ -4,8 +4,13 @@ import {
   updateSubAttributes,
 } from "../../../db/queries/updateServiceById";
 import connection from "../../../db/dbInit";
+import { ReqUser } from "../../../types/authTypes";
 
 const updateService = async (req: Request, res: Response) => {
+  const user = req.user as ReqUser;
+  if (user.privileges !== "admin")
+    return res.status(401).json("only an admin may update a service");
+
   const serviceId = parseInt(req.params.serviceId);
   const body = req.body;
 

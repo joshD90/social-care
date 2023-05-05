@@ -3,7 +3,8 @@ import { useContext, useState } from "react";
 import { AuthSignIn } from "../../types/authTypes";
 import { AuthContext } from "../../context/AuthContext";
 import getFetchUser from "../../fetchRequests.ts/getUserFetch";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import getFetch from "../../fetchRequests.ts/getFetch";
 
 type Props = {};
 
@@ -13,6 +14,7 @@ const SignIn = (props: Props) => {
     password: "",
   });
   const { currentUser, userDispatch } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -21,12 +23,22 @@ const SignIn = (props: Props) => {
       [name as "password" | "username"]: value,
     }));
   };
-
+  //regular sign in
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const abortController = new AbortController();
     getFetchUser(credentials, userDispatch, abortController);
-
+    return () => abortController.abort();
+  };
+  //guest sign in - don't have to worry about these credentials they are publicly accessible
+  const handleGuestSignIn = (e: React.FormEvent) => {
+    e.preventDefault();
+    const abortController = new AbortController();
+    getFetchUser(
+      { username: "guest", password: "guest123" },
+      userDispatch,
+      abortController
+    );
     return () => abortController.abort();
   };
 
@@ -67,6 +79,21 @@ const SignIn = (props: Props) => {
           </div>
           <button className="bg-green-600 p-2">Sign In</button>
         </form>
+        <div className="flex flex-col items-center text-slate-50 gap-2 mt-8">
+          <p className="text-slate-400">Don't have an account?</p>
+          <button
+            onClick={() => navigate("/auth/signup")}
+            className="bg-gray-700 w-full py-2 bg-opacity-80 hover:bg-opacity-100"
+          >
+            Sign Up
+          </button>
+          <button
+            className="py-2 w-full bg-green-700 bg-opacity-80 hover:bg-opacity-100"
+            onClick={handleGuestSignIn}
+          >
+            Continue as Guest
+          </button>
+        </div>
       </div>
     </div>
   );

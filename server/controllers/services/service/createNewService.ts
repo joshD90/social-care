@@ -6,8 +6,13 @@ import {
   createSubRecord,
 } from "../../../db/queries/createServiceQueries";
 import { SubGroupReq } from "../../../types/serviceTypes";
+import { ReqUser } from "../../../types/authTypes";
 
 const createNewService = async (req: Request, res: Response) => {
+  const user = req.user as ReqUser;
+  if (user.privileges !== "admin")
+    return res.status(401).json("Only an Admin may create a new Service");
+
   //make sure the connection is up and running
   if (!connection) res.status(500).send("Could not connect to the database");
 

@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
-import { AuthCreate } from "../../types/AuthTypes";
+import { AuthCreate } from "../../types/authTypes";
+import { Navigate, useNavigate } from "react-router-dom";
 
 type Props = {};
 
@@ -9,6 +10,8 @@ const SignUp = (props: Props) => {
     password: "",
     passwordConfirm: "",
   });
+  const [error, setError] = useState<string>("");
+  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -18,9 +21,24 @@ const SignUp = (props: Props) => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(credentials);
+    const url = "http://localhost:5000/auth/signup";
+    try {
+      const response = await fetch(url, {
+        body: JSON.stringify({ ...credentials }),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+      });
+      if (!response.ok)
+        return setError(
+          `Could not Create User with the Error ${response.status}`
+        );
+      navigate("/auth/signin");
+    } catch (error) {
+      if (error instanceof Error)
+        setError(`There was an error: ${error.message}`);
+    }
   };
 
   return (
@@ -29,6 +47,7 @@ const SignUp = (props: Props) => {
       style={{ height: "calc(100vh - 3rem)" }}
     >
       <div className="w-4/5 md:w-2/3 lg:w-1/3 bg-slate-600 border-slate-50 border-2 rounded-sm p-5">
+        {error !== "" && <span>{error}</span>}
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
           <div className="flex flex-col gap-1">
             <label htmlFor="" className="text-gray-800">

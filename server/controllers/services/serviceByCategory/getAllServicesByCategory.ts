@@ -3,6 +3,7 @@ import getAllServicesByCategoryQuery from "../../../db/queries/getServicesByCate
 import connection from "../../../db/dbInit";
 
 const getAllServicesByCategory = async (req: Request, res: Response) => {
+  console.log("hitting services by category controller");
   const category = req.params.category;
 
   try {

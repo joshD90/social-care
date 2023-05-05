@@ -58,10 +58,10 @@ export const configurePassport = (app: Application) => {
 
 //this is the functiont that is plugged into JWTFromRequest config options
 const cookieExtractor: JwtFromRequestFunction = (req) => {
-  console.log(req.cookies, "cookies");
   let token = null;
   if (req && req.cookies) {
     token = req.cookies["jwt"];
   }
+
   return token;
 };

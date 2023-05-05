@@ -13,6 +13,7 @@ const getFetchUser = async (
       method: "POST",
       body: JSON.stringify({ ...credentials }),
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
     });
 
     if (!response.ok)

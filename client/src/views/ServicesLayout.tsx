@@ -1,13 +1,20 @@
-import { useReducer, useState, useEffect } from "react";
-import { Outlet, useParams, useLocation } from "react-router-dom";
+import { useReducer, useState, useEffect, useContext } from "react";
+import { Outlet, useParams, useLocation, Navigate } from "react-router-dom";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import LayoutList from "./LayoutList";
 import newListReducer from "../reducers/newListReducer";
 import getFetch from "../fetchRequests.ts/getFetch";
+import { AuthContext } from "../context/AuthContext";
 
 type Props = {};
-
+//this is our primary layout for all things services, this will return different formats depedning on screen size
 const ServicesLayout = (props: Props) => {
+  const { currentUser } = useContext(AuthContext);
+  //if we don't have a current user as part of our AuthContext then return us to the homepage
+  if (!currentUser.user) {
+    return <Navigate to="/auth/signin" replace />;
+  }
+
   const location = useLocation();
   const { category, service } = useParams();
   const [list, dispatch] = useReducer(newListReducer, {

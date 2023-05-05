@@ -1,11 +1,11 @@
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
-
-import useForm from "../hooks/useForm";
-import AdminInput from "../microComponents/AdminInput";
-import { ServiceFormType } from "../types/serviceTypes";
-import { categoriesArray } from "../data/categoriesData";
-import AdminSelectInput from "../microComponents/AdminSelectInput";
 import { useParams } from "react-router-dom";
+
+import useForm from "../../hooks/useForm";
+import AdminInput from "../../microComponents/AdminInput";
+import { ServiceFormType } from "../../types/serviceTypes";
+import { categoriesArray } from "../../data/categoriesData";
+import AdminSelectInput from "../../microComponents/AdminSelectInput";
 
 type Props = {
   update?: boolean;
@@ -34,7 +34,7 @@ const CreateService: FC<Props> = ({ update }) => {
       e.preventDefault();
 
       const url = `http://localhost:5000/services/service/${
-        updateId && updateId
+        updateId ? updateId : ""
       }`;
       //change our sub attributes into arrays if they aren't already
       const { needsMet, clientGroups, areasServed } = serviceForm;
@@ -55,6 +55,7 @@ const CreateService: FC<Props> = ({ update }) => {
           method: update ? "PUT" : "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(ammendedServiceForm),
+          credentials: "include",
         });
         //error handle
         if (!response.ok)
@@ -73,7 +74,7 @@ const CreateService: FC<Props> = ({ update }) => {
     },
     [serviceForm]
   );
-  //if this is an update component we will grab the information
+  //if this is an update service we will grab the information from the preexisting service
   useEffect(() => {
     if (!update || !updateId) return;
 
@@ -82,12 +83,16 @@ const CreateService: FC<Props> = ({ update }) => {
       try {
         const result = await fetch(
           `http://localhost:5000/services/service/${updateId}`,
-          { method: "GET", signal: abortController.signal }
+          {
+            method: "GET",
+            signal: abortController.signal,
+            credentials: "include",
+          }
         );
         if (!result.ok)
           throw new Error(`Error with fetching the service ${result.status}`);
         const serviceFetched = await result.json();
-        console.log(serviceFetched, "SERVICE FETCHED");
+
         setServiceForm((prev) => {
           //change our arrays into strings to feed into inputs
           const { needsMet, clientGroups, areasServed, ...rest } =
@@ -95,7 +100,7 @@ const CreateService: FC<Props> = ({ update }) => {
           const alteredNeedsMet = needsMet.join(" ");
           const alteredClientGroups = clientGroups.join(" ");
           const alteredAreasServed = areasServed.join(" ");
-          console.log(alteredAreasServed, alteredNeedsMet, alteredClientGroups);
+
           //update our state
           return {
             ...prev,

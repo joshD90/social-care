@@ -3,6 +3,8 @@ import { AiOutlineSearch, AiFillHome } from "react-icons/ai";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import fetchSignout from "../fetchRequests.ts/fetchSignout";
+import { AiOutlineLogout } from "react-icons/ai";
+import { FaUser, FaUserAlt } from "react-icons/fa";
 
 type Props = {};
 
@@ -28,27 +30,14 @@ const Navbar = (props: Props) => {
             />
           </form>
         </div>
-        {!currentUser.user ? (
-          <div className="flex md:gap-2 h-full">
-            <Link to="/auth/signin" className="h-full">
-              <button className="rounded-sm bg-lime-600 px-1 md:px-5 text-white font-bold opacity-90 hover:opacity-100 h-full">
-                Sign In
-              </button>
-            </Link>
-            <Link to="/auth/signup" className="h-full">
-              <button className="rounded-sm bg-blue-600  px-1 md:px-5 text-white font-bold opacity-90 hover:opacity-100 h-full">
-                Sign Up
-              </button>
-            </Link>
-          </div>
-        ) : (
+        {currentUser.user && (
           <div className="flex items-center gap-2 h-full">
-            <span>{currentUser.user.username}</span>
+            <FaUserAlt />
             <button
-              className="bg-red-500 text-white h-full px-2"
+              className=" text-white h-full px-2"
               onClick={() => fetchSignout(userDispatch)}
             >
-              Logout
+              <AiOutlineLogout size={25} />
             </button>
           </div>
         )}

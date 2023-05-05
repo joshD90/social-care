@@ -6,6 +6,7 @@ import {
   Dispatch,
   ReactNode,
   useReducer,
+  useEffect,
 } from "react";
 import userReducer from "../reducers/userReducer";
 
@@ -30,10 +31,36 @@ export const AuthContext = createContext<UserContextType>({
 
 const AuthContextProvider: FC<Props> = ({ children }) => {
   const [currentUser, userDispatch] = useReducer(userReducer, {
-    isLoading: false,
+    isLoading: true,
     user: null,
     error: null,
   });
+  //we want to get our user if there is any in our cookies
+  useEffect(() => {
+    const url = "http://localhost:5000/auth/user-data";
+    const getUserFromCookie = (async () => {
+      try {
+        const response = await fetch(url, { credentials: "include" });
+        if (!response.ok)
+          return userDispatch({
+            type: "GET_USER_FAILURE",
+            payload: "Not Authorised",
+          });
+        const user = await response.json();
+        return userDispatch({ type: "GET_USER_SUCCESS", payload: user });
+      } catch (error) {
+        if (error instanceof Error)
+          userDispatch({ type: "GET_USER_FAILURE", payload: error.message });
+      }
+    })();
+  }, []);
+
+  if (currentUser.isLoading)
+    return (
+      <div className="flex items-center justify-center bg-slate-800 text-slate-50">
+        ...Loading
+      </div>
+    );
 
   return (
     <AuthContext.Provider value={{ currentUser, userDispatch }}>

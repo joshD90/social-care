@@ -11,6 +11,7 @@ const getFetch = async (
     dispatch({ type: "GET_INIT" });
     const result = await fetch(`${baseUrl}${endPoint}`, {
       signal: controller.signal,
+      credentials: "include",
     });
     if (!result.ok)
       return dispatch({

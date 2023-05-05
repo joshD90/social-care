@@ -5,10 +5,11 @@ import Service from "./views/Service";
 import Navbar from "./components/Navbar";
 import ServicesLayout from "./views/ServicesLayout";
 import Home from "./views/Home";
-import CreateService from "./views/CreateService";
+import CreateService from "./views/admin/CreateService";
 import SignIn from "./views/auth/SignIn";
 import SignUp from "./views/auth/SignUp";
 import AuthContextProvider from "./context/AuthContext";
+import AdminWrapper from "./views/admin/AdminWrapper";
 
 function App() {
   return (
@@ -21,11 +22,13 @@ function App() {
             <Route path="/auth/signin" element={<SignIn />} />
             <Route path="/auth/signup" element={<SignUp />} />
             {/* ADMIN PATHS */}
-            <Route path="/admin/create" element={<CreateService />} />
-            <Route
-              path="/admin/update/:serviceId"
-              element={<CreateService update={true} />}
-            />
+            <Route path="/admin" element={<AdminWrapper />}>
+              <Route path="create" element={<CreateService />} />
+              <Route
+                path="update/:serviceId"
+                element={<CreateService update={true} />}
+              />
+            </Route>
             {/* MAIN SERVICES PATHS */}
             <Route path="/" element={<Home />} />
             <Route path="/services/categories" element={<ServicesLayout />}>
