@@ -8,7 +8,7 @@ type Props = {};
 const AdminWrapper = (props: Props) => {
   const { currentUser } = useContext(AuthContext);
   console.log(currentUser.user, "current user in admin wrapper");
-  if (!(currentUser.user?.privileges === "admin")) return <Navigate to="/" />;
+  // if (!(currentUser.user?.privileges === "admin")) return <Navigate to="/" />;
 
   return (
     <div style={{ height: "calc(100vh - 3rem)" }} className="overflow-y-scroll">

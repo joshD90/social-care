@@ -31,7 +31,7 @@ export interface ServiceDBReturn extends RowDataPacket {
   id: number;
 }
 export interface CategoryWithNeeds extends ServiceDBReturn {
-  needsMet: string[];
+  needsMet: SubAttribute[];
 }
 
 export interface Category {

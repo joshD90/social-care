@@ -57,9 +57,9 @@ export type FullServiceType = {
   referralPathway: string;
   address: string;
   imageUrl: string;
-  needsMet: string[];
-  clientGroups: string[];
-  areasServed: string[];
+  needsMet: SingleAttr[];
+  clientGroups: SingleAttr[];
+  areasServed: SingleAttr[];
 };
 
 export type ServiceWithoutSubs = {
@@ -119,3 +119,8 @@ export type ListReducerActions =
   | { type: "GET_SUCCESS"; payload: any }
   | { type: "GET_FAILURE"; payload: string }
   | { type: "Set_Categories_List" };
+
+export type SingleAttr = {
+  status: "essential" | "secondary";
+  value: string;
+};

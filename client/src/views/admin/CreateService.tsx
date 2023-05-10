@@ -6,6 +6,7 @@ import AdminInput from "../../microComponents/AdminInput";
 import { ServiceFormType } from "../../types/serviceTypes";
 import { categoriesArray } from "../../data/categoriesData";
 import AdminSelectInput from "../../microComponents/AdminSelectInput";
+import AdminArrayEntry from "../../components/AdminArrayEntry";
 
 type Props = {
   update?: boolean;
@@ -232,6 +233,7 @@ const CreateService: FC<Props> = ({ update }) => {
             onChange={handleInputChange}
             value={serviceForm.areasServed}
           />
+          <AdminArrayEntry onChange={handleInputChange} arrayName="needsMet" />
         </div>
         <button
           onClick={handleSubmit}

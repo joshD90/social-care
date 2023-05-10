@@ -14,10 +14,23 @@ const Home = (props: Props) => {
   }
 
   return (
-    <div className="w-full h-full flex items-center justify-center bg-green-300">
+    <div
+      className="w-full h-full flex flex-col gap-5 items-center justify-center relative text-center"
+      style={{
+        height: "calc(100vh - 3rem)",
+        background:
+          "linear-gradient(rgba(0, 0, 0, 0.80), rgba(0, 0, 0, 0.60)),url(https://www.courses.ie/wp-content/uploads/2018/02/shutterstock_135908474.jpg)",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+      }}
+    >
+      <h1 className="text-white text-6xl">Social Care</h1>
+      <h2 className="text-white text-3xl pb-10">
+        A One Stop Shop for Homeless Services
+      </h2>
       <button
         onClick={() => navigate("/services/categories")}
-        className="p-5 bg-slate-500"
+        className="p-5 bg-slate-500 bg-opacity-100"
       >
         Services
       </button>

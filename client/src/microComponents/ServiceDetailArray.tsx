@@ -1,10 +1,11 @@
 import React, { FC } from "react";
 import { ColorTypes } from "../types/colorTypes";
 import { twThemeColors } from "../assets/twThemeColors";
+import { SingleAttr } from "../types/serviceTypes";
 
 type Props = {
   detailLabel: string;
-  detailArray: string[];
+  detailArray: SingleAttr[];
   themeColor: ColorTypes | "";
 };
 
@@ -21,9 +22,19 @@ const ServiceDetailArray: FC<Props> = ({
       <div
         className={`bg-slate-500 p-3 border-2 ${twThemeColors.border[themeColor]} rounded-md flex-grow flex flex-wrap gap-5`}
       >
-        {detailArray.map((detail) => (
-          <span key={detail}>{detail.toUpperCase()}</span>
-        ))}
+        {detailArray.map((detail) => {
+          console.log(detail);
+          return (
+            <span
+              key={detail.value}
+              className={`${
+                detail.status === "essential" ? "bg-green-500" : "bg-slate-300"
+              } p-1`}
+            >
+              {detail.value.toUpperCase()}
+            </span>
+          );
+        })}
       </div>
     </div>
   );

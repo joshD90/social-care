@@ -16,13 +16,13 @@ const createServicesTable =
 
 //set up our junction tables for our many to many relationships
 const createServiceNeedsJunction =
-  "CREATE TABLE IF NOT EXISTS service_needs(service_id INT NOT NULL, need_id INT NOT NULL, PRIMARY KEY (service_id, need_id), FOREIGN KEY (service_id) REFERENCES services(id) ON DELETE CASCADE, FOREIGN KEY (need_id) REFERENCES needsMet(id) ON DELETE CASCADE)";
+  "CREATE TABLE IF NOT EXISTS service_needs(service_id INT NOT NULL, need_id INT NOT NULL, PRIMARY KEY (service_id, need_id), importance VARCHAR(20) DEFAULT 'secondary', FOREIGN KEY (service_id) REFERENCES services(id) ON DELETE CASCADE, FOREIGN KEY (need_id) REFERENCES needsMet(id) ON DELETE CASCADE)";
 
 const createServiceClientGroupJunction =
-  "CREATE TABLE IF NOT EXISTS service_clientGroups(service_id INT NOT NULL, clientGroup_id INT NOT NULL, PRIMARY KEY (service_id, clientGroup_id), FOREIGN KEY (service_id) REFERENCES services(id) ON DELETE CASCADE, FOREIGN KEY (clientGroup_id) REFERENCES clientGroups(id) ON DELETE CASCADE)";
+  "CREATE TABLE IF NOT EXISTS service_clientGroups(service_id INT NOT NULL, clientGroup_id INT NOT NULL, PRIMARY KEY (service_id, clientGroup_id), importance VARCHAR(20) DEFAULT 'secondary', FOREIGN KEY (service_id) REFERENCES services(id) ON DELETE CASCADE, FOREIGN KEY (clientGroup_id) REFERENCES clientGroups(id) ON DELETE CASCADE)";
 
 const createServiceAreaJunction =
-  "CREATE TABLE IF NOT EXISTS service_areas(service_id INT NOT NULL, area_id INT NOT NULL, PRIMARY KEY (service_id, area_id), FOREIGN KEY (service_id) REFERENCES services(id) ON DELETE CASCADE, FOREIGN KEY (area_id) REFERENCES areasServed(id) ON DELETE CASCADE)";
+  "CREATE TABLE IF NOT EXISTS service_areas(service_id INT NOT NULL, area_id INT NOT NULL, PRIMARY KEY (service_id, area_id),  importance VARCHAR(20) DEFAULT 'secondary', FOREIGN KEY (service_id) REFERENCES services(id) ON DELETE CASCADE, FOREIGN KEY (area_id) REFERENCES areasServed(id) ON DELETE CASCADE)";
 
 export const initServiceTablesQueries = {
   createServicesTable,

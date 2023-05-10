@@ -2,6 +2,7 @@ import {
   CategoryForwardTo,
   CategoryNames,
   FullServiceType,
+  SingleAttr,
 } from "../types/serviceTypes";
 
 export class ServiceInList {
@@ -23,7 +24,7 @@ export class ServiceInList {
 export class ServiceDropped extends ServiceInList {
   protected organisation: string;
   protected description: string;
-  protected needsMet: string[];
+  protected needsMet: SingleAttr[];
   protected forwardTo: string;
   protected minAge: number | null;
   protected maxAge: number | null;
@@ -34,7 +35,7 @@ export class ServiceDropped extends ServiceInList {
     category: CategoryForwardTo,
     organisation: string,
     description: string,
-    needsMet: string[],
+    needsMet: SingleAttr[],
     forwardTo: string,
     minAge: number | null,
     maxAge: number | null
@@ -61,7 +62,7 @@ export class ServiceDropped extends ServiceInList {
     return this.description;
   }
 
-  getNeedsMet(): string[] {
+  getNeedsMet(): SingleAttr[] {
     return this.needsMet;
   }
 
@@ -89,8 +90,8 @@ export class Service extends ServiceDropped {
   private referralPathway: string;
   private address: string;
   private imageUrl: string;
-  private clientGroups: string[];
-  private areasServed: string[];
+  private clientGroups: SingleAttr[];
+  private areasServed: SingleAttr[];
 
   constructor(service: FullServiceType) {
     super(
@@ -159,15 +160,15 @@ export class Service extends ServiceDropped {
     return this.imageUrl;
   }
 
-  getNeedsMet(): string[] {
+  getNeedsMet(): SingleAttr[] {
     return this.needsMet;
   }
 
-  getClientGroups(): string[] {
+  getClientGroups(): SingleAttr[] {
     return this.clientGroups;
   }
 
-  getAreasServed(): string[] {
+  getAreasServed(): SingleAttr[] {
     return this.areasServed;
   }
 }

@@ -21,7 +21,7 @@ export const getServiceSubAttributes = async (
   connection: PromisePoolConnection,
   serviceId: number,
   attribute: "needsMet" | "clientGroups" | "areasServed"
-): Promise<string[] | Error> => {
+): Promise<SubAttribute[] | Error> => {
   let junctionTable: string;
   let colName: string;
   let junctionTableTargetCol: string;
@@ -43,15 +43,22 @@ export const getServiceSubAttributes = async (
       break;
   }
   //formulate our query based on which sub attribute we are seeking
-  const query = `SELECT ${colName} FROM ${junctionTable} JOIN ${attribute} ON ${junctionTableTargetCol} = ${attribute}.id WHERE service_id = ?`;
+  const query = `SELECT ${colName} ${
+    colName === "need" ? ", importance" : ""
+  }  FROM ${junctionTable} JOIN ${attribute} ON ${junctionTableTargetCol} = ${attribute}.id WHERE service_id = ?`;
 
   const values = [serviceId];
 
   try {
     const [rows] = await connection.query<SubAttribute[]>(query, values);
-    const arrayOfAttributes = rows.map((row) => Object.values<string>(row)[0]);
-
-    return arrayOfAttributes;
+    //change it into a type that will suit the front end aka {value:something, status:something} instead of {needs:something,importance:something}
+    const alteredForFrontend = rows.map((detail) => {
+      const valuesArray = Object.values(detail);
+      if (!(valuesArray.length === 2))
+        throw Error("Wrong number of columns returned");
+      return { value: valuesArray[0], status: valuesArray[1] };
+    });
+    return rows;
   } catch (error) {
     console.log(error);
     return error as Error;

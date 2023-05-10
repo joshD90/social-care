@@ -10,6 +10,7 @@ import SignIn from "./views/auth/SignIn";
 import SignUp from "./views/auth/SignUp";
 import AuthContextProvider from "./context/AuthContext";
 import AdminWrapper from "./views/admin/AdminWrapper";
+import AdminArrayEntry from "./components/AdminArrayEntry";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
                 path="update/:serviceId"
                 element={<CreateService update={true} />}
               />
+              <Route path="test/array" element={<AdminArrayEntry />} />
             </Route>
             {/* MAIN SERVICES PATHS */}
             <Route path="/" element={<Home />} />
